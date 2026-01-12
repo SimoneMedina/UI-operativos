@@ -1,0 +1,218 @@
+.js
+
+
+import { useState, useEffect } from "react";
+import {
+  AreaChart, Area,
+  LineChart, Line,
+  BarChart, Bar,
+  XAxis, YAxis, Tooltip, ResponsiveContainer
+} from "recharts";
+import "./App.css";
+
+const random = (min, max) => Math.floor(Math.random() * (max - min) + min);
+
+function App() {
+  const [dark, setDark] = useState(true);
+  const [alerts, setAlerts] = useState([]);
+
+  const [system, setSystem] = useState([]);
+  const [network, setNetwork] = useState([]);
+  const [apps, setApps] = useState([]);
+
+  useEffect(() => {
+    setInterval(() => {
+      setSystem(prev => [...prev.slice(-10), {
+        t: new Date().toLocaleTimeString(),
+        cpu: random(30, 90),
+        ram: random(40, 85)
+      }]);
+    }, 2000);
+
+    setInterval(() => {
+      setNetwork(prev => [...prev.slice(-10), {
+        t: new Date().toLocaleTimeString(),
+        in: random(20, 80),
+        out: random(10, 70)
+      }]);
+    }, 2500);
+
+    setInterval(() => {
+      setApps([
+        { name: "Chrome", v: random(10, 40) },
+        { name: "MySQL", v: random(5, 30) },
+        { name: "Node", v: random(8, 35) }
+      ]);
+    }, 3000);
+
+    setInterval(() => {
+      setAlerts(prev => [
+        {
+          msg: "Actividad sospechosa detectada",
+          level: ["LOW", "MEDIUM", "HIGH"][random(0,3)],
+          time: new Date().toLocaleTimeString()
+        },
+        ...prev.slice(0,5)
+      ]);
+    }, 5000);
+  }, []);
+
+  return (
+    <div className={dark ? "app dark" : "app"}>
+
+      <header className="topbar">
+        <h2>Security Operations Dashboard</h2>
+        <button onClick={() => setDark(!dark)}>
+          {dark ? "Claro" : "Oscuro"}
+        </button>
+      </header>
+
+      <div className="grid">
+
+        <div className="card wide">
+          <h3>Estado del sistema & detección de ataques</h3>
+          <ResponsiveContainer width="100%" height={200}>
+            <AreaChart data={system}>
+              <XAxis dataKey="t" />
+              <YAxis />
+              <Tooltip />
+              <Area dataKey="cpu" />
+              <Area dataKey="ram" />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="card">
+          <h3>Tráfico de red</h3>
+          <ResponsiveContainer width="100%" height={180}>
+            <LineChart data={network}>
+              <XAxis dataKey="t" />
+              <YAxis />
+              <Tooltip />
+              <Line dataKey="in" />
+              <Line dataKey="out" />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="card">
+          <h3>Aplicaciones críticas</h3>
+          <ResponsiveContainer width="100%" height={180}>
+            <BarChart data={apps}>
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="v" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="card wide alerts">
+          <h3>Alertas en tiempo real</h3>
+          <div className="alert-list">
+            {alerts.map((a, i) => (
+              <div key={i} className={`alert ${a.level.toLowerCase()}`}>
+                <strong>{a.level}</strong> – {a.msg}
+                <span>{a.time}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  );
+}
+
+export default App;
+
+
+
+css.
+
+
+* {
+  font-family: Ubuntu, sans-serif;
+  box-sizing: border-box;
+}
+
+.app {
+  min-height: 100vh;
+  padding: 1rem;
+  background: #f2f2f2;
+  color: #222;
+}
+
+.app.dark {
+  background: #2c001e;
+  color: #eee;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+button {
+  background: #e95420;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+}
+
+.card {
+  background: white;
+  border-radius: 18px;
+  padding: 1rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.dark .card {
+  background: #3b0a2a;
+}
+
+.wide {
+  grid-column: span 2;
+}
+
+.alerts {
+  max-height: 260px;
+}
+
+.alert-list {
+  overflow-y: auto;
+  max-height: 200px;
+}
+
+.alert {
+  padding: 0.5rem;
+  margin-bottom: 0.4rem;
+  border-radius: 10px;
+  font-size: 0.85rem;
+}
+
+.alert.low { background: #2ecc71; }
+.alert.medium { background: #f39c12; }
+.alert.high { background: #e74c3c; }
+
+.alert span {
+  float: right;
+  font-size: 0.7rem;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

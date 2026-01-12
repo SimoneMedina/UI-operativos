@@ -1,0 +1,182 @@
+.js 
+
+import { useState } from "react";
+import {
+  LineChart, Line, BarChart, Bar,
+  XAxis, YAxis, Tooltip, ResponsiveContainer
+} from "recharts";
+import "./App.css";
+
+const cpuData = [
+  { name: "1", value: 40 },
+  { name: "2", value: 55 },
+  { name: "3", value: 35 },
+  { name: "4", value: 70 },
+  { name: "5", value: 60 }
+];
+
+const ramData = [
+  { name: "A", value: 4 },
+  { name: "B", value: 6 },
+  { name: "C", value: 5 },
+  { name: "D", value: 7 }
+];
+
+function App() {
+  const [dark, setDark] = useState(false);
+  const [chatOpen, setChatOpen] = useState(false);
+
+  return (
+    <div className={dark ? "app dark" : "app"}>
+      
+      {/* BOTÓN MODO OSCURO */}
+      <button className="theme-btn" onClick={() => setDark(!dark)}>
+        {dark ? "Modo claro" : "Modo oscuro"}
+      </button>
+
+      {/* DASHBOARD */}
+      <div className="dashboard">
+
+        <div className="card">
+          <h3>Estado del sistema</h3>
+          <p>CPU: 62%</p>
+          <p>RAM: 5.8 GB / 8 GB</p>
+          <p>Procesos activos: 124</p>
+        </div>
+
+        <div className="card">
+          <h3>Uso de CPU</h3>
+          <ResponsiveContainer width="100%" height={200}>
+            <LineChart data={cpuData}>
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Line dataKey="value" />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+
+        <div className="card">
+          <h3>Procesos principales</h3>
+          <ul>
+            <li>chrome.exe</li>
+            <li>mysql</li>
+            <li>node</li>
+            <li>systemd</li>
+          </ul>
+        </div>
+
+        <div className="card">
+          <h3>Uso de memoria</h3>
+          <ResponsiveContainer width="100%" height={200}>
+            <BarChart data={ramData}>
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Bar dataKey="value" />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+
+      </div>
+
+      {/* CHATBOT */}
+      <div className={chatOpen ? "chat open" : "chat"}>
+        <div className="chat-header" onClick={() => setChatOpen(!chatOpen)}>
+          Asistente del sistema
+        </div>
+        <div className="chat-body">
+          <p><strong>Bot:</strong> ¿En qué puedo ayudarte?</p>
+        </div>
+      </div>
+
+    </div>
+  );
+}
+
+export default App;
+
+* {
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.app {
+  min-height: 100vh;
+  background: #f4f6f8;
+  color: #222;
+  padding: 1rem;
+}
+
+.app.dark {
+  background: #121212;
+  color: #e0e0e0;
+}
+
+/* BOTÓN */
+.theme-btn {
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* DASHBOARD 4 SECCIONES */
+.dashboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 1rem;
+}
+
+/* TARJETAS */
+.card {
+  background: white;
+  padding: 1rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.dark .card {
+  background: #1e1e1e;
+}
+
+/* CHATBOT */
+.chat {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  width: 260px;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.dark .chat {
+  background: #1e1e1e;
+}
+
+.chat-header {
+  padding: 0.75rem;
+  background: #3b82f6;
+  color: white;
+  cursor: pointer;
+}
+
+.chat-body {
+  padding: 0.75rem;
+  display: none;
+}
+
+.chat.open .chat-body {
+  display: block;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .dashboard {
+    grid-template-columns: 1fr;
+  }
+}
