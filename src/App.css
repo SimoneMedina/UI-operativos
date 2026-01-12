@@ -1,0 +1,156 @@
+.app {
+  min-height: 100vh;
+  font-family: system-ui, sans-serif;
+}
+
+.light {
+  background: #ffffff;
+  color: #2c2c2c;
+}
+
+.dark {
+  background: #1e1e2e;
+  color: #eaeaea;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: #77216f;
+  color: white;
+}
+
+.topbar button {
+  background: white;
+  color: #77216f;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  padding: 20px;
+}
+
+.card {
+  background: #f4f4f4;
+  padding: 14px;
+  border-radius: 12px;
+}
+
+.dark .card {
+  background: #2a2a40;
+}
+
+.analysis {
+  margin-top: 10px;
+  padding: 8px;
+  border-radius: 6px;
+  background: #ede7f6;
+  font-size: 0.85rem;
+}
+
+.dark .analysis {
+  background: #512e5f;
+}
+
+.alerts {
+  border-left: 6px solid #c0392b;
+}
+
+.alert {
+  margin-bottom: 8px;
+  padding: 6px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.alert.low { background: #f9e79f; }
+.alert.medium { background: #f5cba7; }
+.alert.high { background: #f1948a; font-weight: bold; }
+
+.sub {
+  margin-top: 12px;
+  font-size: 0.9rem;
+}
+
+.legend {
+  list-style: none;
+  padding: 0;
+  font-size: 0.8rem;
+}
+
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  margin-right: 6px;
+  border-radius: 50%;
+}
+
+/* CHATBOT */
+
+.chatbot {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 280px;
+  background: #f5f5f5;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+}
+
+.dark .chatbot {
+  background: #2b2b2b;
+}
+
+.chat-header {
+  padding: 10px;
+  background: #3a3a3a;
+  color: #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 12px 12px 0 0;
+}
+
+.min-btn {
+  background: none;
+  border: none;
+  color: #ccc;
+  cursor: pointer;
+}
+
+.chat-body {
+  padding: 10px;
+  font-size: 0.8rem;
+}
+
+.msg.bot { color: #666; }
+.dark .msg.bot { color: #aaa; }
+
+.msg.user {
+  text-align: right;
+  color: #222;
+}
+
+.dark .msg.user {
+  color: white;
+}
+
+.chat-input {
+  border: none;
+  padding: 8px;
+  border-top: 1px solid #ddd;
+  border-radius: 0 0 12px 12px;
+}
+
+.chatbot.min {
+  height: auto;
+}
